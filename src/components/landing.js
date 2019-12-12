@@ -9,9 +9,12 @@ import Nav from 'react-bootstrap/Nav'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 
+import '../styling/landing.css'
+
 const Landing = (props) => {
+
     return (
-        <div>
+        <div id="landing">
             <Navbar bg="light" variant="light">
                 <Navbar.Brand href="#home">Productive Ambience</Navbar.Brand>
                 <Nav className="mr-auto justify-content-end">
