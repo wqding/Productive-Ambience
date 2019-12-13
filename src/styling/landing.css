@@ -2,29 +2,35 @@
 
 @keyframes bgcolor {
     0% {
-        background-color: #8bce65
+        background-color:#99BB7D
     }
 
     30% {
-        background-color: #a9d394
+        background-color:#a9a8dd
     }
 
     60% {
-        background-color: #e79f9f
+        background-color: #669966
     }
 
     90% {
-        background-color: rgb(168, 184, 219)
+        background-color: #da9595
     }
 
     100% {
-        background-color: #a9a8dd
+        background-color: #7c98b3
     }
+    
 }
 
 #landing {
-    -webkit-animation: bgcolor 20s infinite;
-    animation: bgcolor 10s infinite;
+    -webkit-animation: bgcolor 100s infinite;
+    animation: bgcolor 100s infinite;
     -webkit-animation-direction: alternate;
     animation-direction: alternate;
+}
+
+#landing-intro {
+    margin: 50px;
+    color: rgb(255, 255, 255);
 }

@@ -10,8 +10,38 @@ import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 
 import '../styling/landing.css'
+import { strict } from 'assert';
 
 const Landing = (props) => {
+
+    var tileItems = [
+        [
+            {
+                name: "fire",
+                active: true,
+                sound: "../sounds/fire",
+                image: "",
+            },
+            {
+                name: "river",
+                active: true,
+                sound: "../sounds/river",
+                image: "",
+            },
+            {
+                name: "train",
+                active: true,
+                sound: "../sounds/train",
+                image: "",
+            }
+        ],
+        [
+
+        ],
+        [
+            
+        ]
+    ]
 
     return (
         <div id="landing">
@@ -31,35 +61,26 @@ const Landing = (props) => {
                    
                 </Nav>
             </Navbar>
-            <Jumbotron fluid>
-                <Container>
-                    <h3>Remove Distractions</h3>
-                    <p>
-                        Create the perfect sonic environment get work done
-                    </p>
-                </Container>
-             </Jumbotron>
-
-             <Container>
-                <Row>
-                    <Col>1 of 3</Col>
-                    <Col>2 of 3</Col>
-                    <Col>3 of 3</Col>
-                </Row>
-                <Row>
-                    <Col>1 of 3</Col>
-                    <Col>2 of 3</Col>
-                    <Col>3 of 3</Col>
-                </Row>
-                <Row>
-                    <Col>1 of 3</Col>
-                    <Col>2 of 3</Col>
-                    <Col>3 of 3</Col>
-                </Row><Row>
-                    <Col>1 of 3</Col>
-                    <Col>2 of 3</Col>
-                    <Col>3 of 3</Col>
-                </Row>
+            
+            <Container id="landing-intro">
+                {/* maybe make this section slightly darker if possible and blend edges into the background */}
+                <h2>Remove Distractions</h2>
+                <p>
+                    Create the perfect sonic environment get work done
+                </p>
+            </Container>
+            
+            <Container id="soundTile-container">
+                {tileItems.map((row) => (
+                    <Row className="soundTile-row">
+                        {row.map((col) => (
+                            <Col id={col.name}>
+                                {/* <soundTile image={col.image} sound={col.sound} active={col.active}/> */}
+                                hello
+                            </Col>
+                        ))}
+                    </Row>
+                ))}
             </Container>
         </div>
     )
