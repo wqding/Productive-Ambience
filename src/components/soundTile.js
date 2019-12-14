@@ -1,10 +1,11 @@
 import React from 'react';
 import { withStyles, makeStyles } from '@material-ui/core/styles';import Grid from '@material-ui/core/Grid';
 import Slider from '@material-ui/core/Slider';
-import VolumeDown from '@material-ui/icons/VolumeDown';
-import VolumeUp from '@material-ui/icons/VolumeUp';
 import Tooltip from '@material-ui/core/Tooltip';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+// import {wind} from '@fortawesome/free-regular-svg-icons'
 import PropTypes from 'prop-types';
+
 
 function ValueLabelComponent(props) {
     const { children, open, value } = props;
@@ -71,17 +72,21 @@ const SoundTile = (props) => {
     };
 
     return (
-        <Grid container spacing={1} style={{color: '#F8F9FA'}}>
-            <Grid item>
-                <VolumeDown />
-            </Grid>
-            <Grid item xs>
-                <VolumeSlider value={value} ValueLabelComponent={ValueLabelComponent} onChange={handleChange} aria-labelledby="VolumeSlider" />
-            </Grid>
+        <div  style={{color: '#F8F9FA'}}>
+            <i class="fas fa-train"></i>
+            <Grid container spacing={1}>
                 <Grid item>
-            <VolumeUp />
+                    <i class="fas fa-volume-down"></i>
+                </Grid>
+                <Grid item xs>
+                    <VolumeSlider value={value} ValueLabelComponent={ValueLabelComponent} onChange={handleChange} aria-labelledby="VolumeSlider" />
+                </Grid>
+                <Grid item>
+                    <i class="fas fa-volume-up"></i>
+                </Grid>
             </Grid>
-        </Grid>
+        </div>
+        
     )
 }
 
