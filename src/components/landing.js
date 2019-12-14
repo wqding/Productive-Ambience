@@ -1,16 +1,10 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
-import Jumbotron from 'react-bootstrap/Jumbotron';
-import Container from 'react-bootstrap/Container';
-import Navbar from 'react-bootstrap/Navbar'
-import Button from 'react-bootstrap/Button'
-import Nav from 'react-bootstrap/Nav'
-import Col from 'react-bootstrap/Col'
-import Row from 'react-bootstrap/Row'
+import {Container, Navbar, Nav, Col, Row} from 'react-bootstrap'
+import SoundTile from './SoundTile'
 
 import '../styling/landing.css'
-import { strict } from 'assert';
 
 const Landing = (props) => {
 
@@ -39,7 +33,7 @@ const Landing = (props) => {
 
         ],
         [
-            
+
         ]
     ]
 
@@ -75,8 +69,8 @@ const Landing = (props) => {
                     <Row className="soundTile-row">
                         {row.map((col) => (
                             <Col id={col.name}>
-                                {/* <soundTile image={col.image} sound={col.sound} active={col.active}/> */}
-                                hello
+                                {/* <SoundTile image={col.image} sound={col.sound} active={col.active}/> */}
+                                <SoundTile/>
                             </Col>
                         ))}
                     </Row>
