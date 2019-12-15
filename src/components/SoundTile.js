@@ -63,7 +63,7 @@ const VolumeSlider = withStyles({
 const SoundTile = (props) => {
   const [volume, setVolume] = useState(props.volume)
   const [active, setActive] = useState(props.active)
-  const [audio, toggleAudio] = useState(() => {
+  const [audio] = useState(() => {
     let audio = new Audio(props.sound)
 
     audio.addEventListener('ended', function () {
@@ -72,12 +72,15 @@ const SoundTile = (props) => {
     }, false);
 
     active? audio.play(): audio.pause();
+    audio.volume = volume/100;
 
     return audio
   })
 
 
   const changeVolume = (event, newVolume) => {
+    audio.volume = newVolume/100;
+    console.log(newVolume/100)
     setVolume(newVolume)
   };
 
