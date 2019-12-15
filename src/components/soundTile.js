@@ -30,11 +30,11 @@ function ValueLabelComponent(props) {
     );
 }
 
-// ValueLabelComponent.propTypes = {
-//     children: PropTypes.element.isRequired,
-//     open: PropTypes.bool.isRequired,
-//     value: PropTypes.number.isRequired,
-// };
+ValueLabelComponent.propTypes = {
+    children: PropTypes.element.isRequired,
+    open: PropTypes.bool.isRequired,
+    value: PropTypes.number.isRequired,
+};
 
 
 const VolumeSlider = withStyles({
@@ -61,26 +61,42 @@ const VolumeSlider = withStyles({
 })(Slider);
 
 const SoundTile = (props) => {
-  //pass in the image path, sound file path, active or not, 
+  const [volume, setVolume] = useState(props.volume)
+  const [active, setActive] = useState(props.active)
 
   // original set value for volume slider
   // const handleChange = (event, newValue) => {
   //   setValue(newValue);
   // };
 
+  const changeVolume = (event, newVolume) => {
+    setVolume(newVolume)
+  };
+
+  const toggleActive = (event) => {
+      setActive(!active);
+  };
+
   return (
     <div style={{
       color: '#F8F9FA',
       textAlign: 'center',
-      opacity: props.active? '50%':'100%'
+      opacity: active? '50%':'100%'
     }}>
-      {/* <i className={props.icon} onClick={props.toggleActive(props.name)}></i> */}
+
+      {console.log(active)}
+      <i className={props.icon} onClick={toggleActive}></i>
       <Grid container spacing={1}>
         <Grid item>
           <i className="fas fa-volume-down"></i>
         </Grid>
         <Grid item xs>
-          <VolumeSlider value={props.volume} ValueLabelComponent={ValueLabelComponent} onChange={props.changeVolume()} aria-labelledby="VolumeSlider" />
+          <VolumeSlider 
+            value={volume} 
+            ValueLabelComponent={ValueLabelComponent} 
+            onChange={changeVolume} 
+            aria-labelledby="VolumeSlider" 
+          />
         </Grid>
         <Grid item>
           <i className="fas fa-volume-up"></i>
