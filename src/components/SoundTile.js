@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { withStyles, makeStyles } from '@material-ui/core/styles';import Grid from '@material-ui/core/Grid';
+import { withStyles } from '@material-ui/core/styles';import Grid from '@material-ui/core/Grid';
 import Slider from '@material-ui/core/Slider';
 import Tooltip from '@material-ui/core/Tooltip';
 import PropTypes from 'prop-types';
@@ -63,18 +63,32 @@ const VolumeSlider = withStyles({
 const SoundTile = (props) => {
   const [volume, setVolume] = useState(props.volume)
   const [active, setActive] = useState(props.active)
+  const [audio, toggleAudio] = useState(() => {
+    let audio = new Audio(props.sound)
 
-  // original set value for volume slider
-  // const handleChange = (event, newValue) => {
-  //   setValue(newValue);
-  // };
+    audio.addEventListener('ended', function () {
+      this.currentTime = 0;
+      this.play();
+    }, false);
+
+    active? audio.play(): audio.pause();
+
+    return audio
+  })
+
 
   const changeVolume = (event, newVolume) => {
     setVolume(newVolume)
   };
 
   const toggleActive = (event) => {
-      setActive(!active);
+    if(active){
+      audio.pause();
+    }
+    else{
+      audio.play();
+    }
+    setActive(!active);
   };
 
   return (

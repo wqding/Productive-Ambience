@@ -1,68 +1,79 @@
+import birds from '../sounds/birds.mp3'
+import cafe from '../sounds/cafe.mp3'
+import fire from '../sounds/fire.mp3'
+import heavy_rain from '../sounds/heavy_rain.mp3'
+import light_rain from '../sounds/light_rain.mp3'
+import night from '../sounds/night.mp3'
+import river from '../sounds/river.mp3'
+import thunder from '../sounds/thunder.mp3'
+import train from '../sounds/train.mp3'
+import waves from '../sounds/waves.mp3'
+
 var tilesConfig = {
-    fire: {
+    "fire": {
         name: "fire",
         active: false,
-        sound: "../sounds/fire",
+        sound: fire,
         icon: "fas fa-fire",
         volume: 30
     },
-    river: {
+    "river": {
         name: "river",
         active: false,
-        sound: "../sounds/river",
+        sound: river,
         icon: "fas fa-water",
         volume: 30
     },
-    train: {
+    "train": {
         name: "train",
         active: false,
-        sound: "../sounds/train",
+        sound: train,
         icon: "fas fa-train",
         volume: 30
     }, 
-    light_rain: {
+    "light_rain": {
         name: "light_rain",
         active: false,
-        sound: "../sounds/light_rain",
+        sound: light_rain,
         icon: "fas fa-cloud-rain",
         volume: 30
     },
-    heavy_rain: {
+    "heavy_rain": {
         name: "heavy_rain",
         active: false,
-        sound: "../sounds/heavy_rain",
+        sound: heavy_rain,
         icon: "fas fa-cloud-showers-heavy",
         volume: 30
     },
-    thunder: {
+    "thunder": {
         name: "thunder",
         active: false,
-        sound: "../sounds/thunder",
+        sound: thunder,
         icon: "fas fa-bolt",
         volume: 30
     },
-    cafe: {
+    "cafe": {
         name: "cafe",
         active: false,
-        sound: "../sounds/cafe",
+        sound: cafe,
         icon: "fas fa-coffee",
         volume: 30
     },
-    waves: {
+    "waves": {
         name: "waves",
         active: false,
-        sound: "../sounds/waves",
+        sound: waves,
         icon: "fas fa-water",
         volume: 30
     },
-    night: {
+    "night": {
         name: "night",
         active: false,
-        sound: "../sounds/night",
+        sound: night,
         icon: "fas fa-moon",
         volume: 30
     },
 }
 
-
+console.log(tilesConfig.fire.sound)
 export default tilesConfig;

@@ -9,15 +9,6 @@ import  tilesConfig from './tilesConfig.js'
 import '../styling/landing.css'
 
 const Landing = (props) => {
-    // const activeStates, volumeStates = [];
-    // tiles.forEach( tile => {
-    //     activeStates.push({
-    //         name:tile.name,
-    //         active:
-    //     })
-    // })
-
-
     
     const populateGrid = () => {
         let gridLayout = []
