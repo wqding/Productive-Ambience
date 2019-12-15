@@ -35,22 +35,28 @@ const Landing = (props) => {
 
     return (
         <div id="landing">
-            <Navbar bg="light" variant="light">
+            <Navbar  expand="sm" bg="light" variant="light">
                 <Navbar.Brand href="#home">Productive Ambience</Navbar.Brand>
-                <Nav className="mr-auto justify-content-end">
-                    <Nav.Item>
-                        <Nav.Link href="#home">Home</Nav.Link>
-                    </Nav.Item>
-                    <Nav.Item>
-                        <Nav.Link href="#home">Home</Nav.Link>
-                    </Nav.Item>
-                    <Nav.Item>
-                        <Nav.Link href="#features">Features</Nav.Link>
-                    </Nav.Item>
-                    
-                   
-                </Nav>
+                <Navbar.Collapse id="responsive-navbar-nav">
+                    <Nav className="mr-auto">
+
+                    </Nav>
+                    <Nav>
+                        <Nav.Link href="#deets">More deets</Nav.Link>
+                        <Nav.Link eventKey={2} href="#memes">
+                            Dank memes
+                        </Nav.Link>
+                    </Nav>
+                </Navbar.Collapse>
             </Navbar>
+
+            {/* <AppBar position="static" style={{backgroundColor: "#F8F9FA"}}>
+                <Toolbar variant="dense">
+                    <Typography variant="h6" style={{color: "#000"}}>
+                        Productive Ambience
+                    </Typography>
+                </Toolbar>
+            </AppBar> */}
             
             <Container id="landing-intro">
                 {/* maybe make this section slightly darker if possible and blend edges into the background */}
@@ -60,7 +66,7 @@ const Landing = (props) => {
                 </p>
             </Container>
             
-            <Container id="soundTile-container" style={{width: "70%", textAlign: "center"}}>
+            <Container id="soundTile-container" style={{width: "60%", textAlign: "center"}}>
                 {populateGrid().map((row, rowIdx) => (
                     <Row className="soundTile-row" key={rowIdx}>
                         {row.map((col, colIdx) => (

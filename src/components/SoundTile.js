@@ -81,11 +81,10 @@ const SoundTile = (props) => {
     <div style={{
       color: '#F8F9FA',
       textAlign: 'center',
-      opacity: active? '50%':'100%'
+      opacity: active? '30%':'100%'
     }}>
 
-      {console.log(active)}
-      <i className={props.icon} onClick={toggleActive}></i>
+      <i className={props.icon} onClick={toggleActive} style={{fontSize:"80px", margin:"20px"}}/>
       <Grid container spacing={1}>
         <Grid item>
           <i className="fas fa-volume-down"></i>
