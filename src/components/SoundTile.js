@@ -81,7 +81,7 @@ const SoundTile = (props) => {
     <div style={{
       color: '#F8F9FA',
       textAlign: 'center',
-      opacity: active? '30%':'100%'
+      opacity: active? '100%':'30%'
     }}>
 
       <i className={props.icon} onClick={toggleActive} style={{fontSize:"80px", margin:"20px"}}/>
