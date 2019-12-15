@@ -1,44 +1,51 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {Link} from 'react-router-dom';
 
 import {Container, Navbar, Nav, Col, Row} from 'react-bootstrap'
 import SoundTile from './SoundTile'
 
+import  tilesConfig from './tilesConfig.js'
+
 import '../styling/landing.css'
 
 const Landing = (props) => {
+    const [tiles, setTiles] = useState(tilesConfig);
+    // const activeStates, volumeStates = [];
+    // tiles.forEach( tile => {
+    //     activeStates.push({
+    //         name:tile.name,
+    //         active:
+    //     })
+    // })
 
-    var tileItems = [
-        [
-            {
-                name: "fire",
-                active: true,
-                sound: "../sounds/fire",
-                image: "",
-            },
-            {
-                name: "river",
-                active: true,
-                sound: "../sounds/river",
-                image: "",
-            },
-            {
-                name: "train",
-                active: true,
-                sound: "../sounds/train",
-                image: "",
+    const changeVolume = (event, newVolume) => {
+      //change the array somehow depending on the parameters passed to it
+        
+
+    //   setTiles
+    }
+
+    const toggleActive = (name) => {
+        tiles.
+        setVolume(newValue);
+    };
+    
+    const populateGrid = (currState) => {
+        let gridLayout = []
+
+        for(let row=0; row < currState.length/3; row++){
+            let rowArr = []
+            for(let col=0; col < 3; col++){
+                rowArr.push(currState[row*3 + col])
             }
-        ],
-        [
-
-        ],
-        [
-
-        ]
-    ]
+            gridLayout.push(rowArr)
+        }
+        return gridLayout
+    }
 
     return (
         <div id="landing">
+            {/* {console.log(tilesCon)} */}
             <Navbar bg="light" variant="light">
                 <Navbar.Brand href="#home">Productive Ambience</Navbar.Brand>
                 <Nav className="mr-auto justify-content-end">
@@ -64,13 +71,20 @@ const Landing = (props) => {
                 </p>
             </Container>
             
-            <Container id="soundTile-container">
-                {tileItems.map((row) => (
+            <Container id="soundTile-container" style={{width: "70%", textAlign: "center"}}>
+                {populateGrid(tiles).map((row) => (
                     <Row className="soundTile-row">
                         {row.map((col) => (
-                            <Col id={col.name}>
-                                {/* <SoundTile image={col.image} sound={col.sound} active={col.active}/> */}
-                                <SoundTile/>
+                            <Col id={col.name} style={{margin: "30px"}}>
+                                <SoundTile
+                                    name={col.name}
+                                    icon={col.icon} 
+                                    sound={col.sound} 
+                                    active={col.active} 
+                                    volume={col.volume} 
+                                    toggleActive={toggleActive}
+                                    changeVolume={changeVolume}
+                                />
                             </Col>
                         ))}
                     </Row>

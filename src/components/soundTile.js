@@ -1,9 +1,7 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { withStyles, makeStyles } from '@material-ui/core/styles';import Grid from '@material-ui/core/Grid';
 import Slider from '@material-ui/core/Slider';
 import Tooltip from '@material-ui/core/Tooltip';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-// import {wind} from '@fortawesome/free-regular-svg-icons'
 import PropTypes from 'prop-types';
 
 
@@ -63,29 +61,32 @@ const VolumeSlider = withStyles({
 })(Slider);
 
 const SoundTile = (props) => {
-    //pass in the image path, sound file path, active or not, 
+  //pass in the image path, sound file path, active or not, 
 
-    const [value, setValue] = React.useState(30);
-  
-    const handleChange = (event, newValue) => {
-      setValue(newValue);
-    };
+  // original set value for volume slider
+  // const handleChange = (event, newValue) => {
+  //   setValue(newValue);
+  // };
 
-    return (
-        <div  style={{color: '#F8F9FA'}}>
-            <i class="fas fa-train"></i>
-            <Grid container spacing={1}>
-                <Grid item>
-                    <i class="fas fa-volume-down"></i>
-                </Grid>
-                <Grid item xs>
-                    <VolumeSlider value={value} ValueLabelComponent={ValueLabelComponent} onChange={handleChange} aria-labelledby="VolumeSlider" />
-                </Grid>
-                <Grid item>
-                    <i class="fas fa-volume-up"></i>
-                </Grid>
-            </Grid>
-        </div>
+  return (
+    <div style={{
+      color: '#F8F9FA',
+      textAlign: 'center',
+      opacity: props.active? '50%':'100%'
+    }}>
+      <i className={props.icon} onClick={props.toggleActive(props.name)}></i>
+      <Grid container spacing={1}>
+        <Grid item>
+          <i className="fas fa-volume-down"></i>
+        </Grid>
+        <Grid item xs>
+          <VolumeSlider value={props.volume} ValueLabelComponent={ValueLabelComponent} onChange={props.changeVolume()} aria-labelledby="VolumeSlider" />
+        </Grid>
+        <Grid item>
+          <i className="fas fa-volume-up"></i>
+        </Grid>
+      </Grid>
+    </div>
         
     )
 }
