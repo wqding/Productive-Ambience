@@ -74,7 +74,7 @@ const SoundTile = (props) => {
       textAlign: 'center',
       opacity: props.active? '50%':'100%'
     }}>
-      <i className={props.icon} onClick={props.toggleActive(props.name)}></i>
+      {/* <i className={props.icon} onClick={props.toggleActive(props.name)}></i> */}
       <Grid container spacing={1}>
         <Grid item>
           <i className="fas fa-volume-down"></i>

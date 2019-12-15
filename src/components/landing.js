@@ -8,8 +8,11 @@ import  tilesConfig from './tilesConfig.js'
 
 import '../styling/landing.css'
 
+
+
 const Landing = (props) => {
     const [tiles, setTiles] = useState(tilesConfig);
+    
     // const activeStates, volumeStates = [];
     // tiles.forEach( tile => {
     //     activeStates.push({
@@ -26,26 +29,32 @@ const Landing = (props) => {
     }
 
     const toggleActive = (name) => {
-        tiles.
-        setVolume(newValue);
+        setTiles(
+            tiles.find(tile => {
+                if (tile.name ===name){
+                    tile.active = !tile.active
+                }
+            })
+        );
     };
     
-    const populateGrid = (currState) => {
+    const populateGrid = () => {
         let gridLayout = []
 
-        for(let row=0; row < currState.length/3; row++){
+        for(let row=0; row < tiles.length/3; row++){
             let rowArr = []
             for(let col=0; col < 3; col++){
-                rowArr.push(currState[row*3 + col])
+                rowArr.push(tiles[row*3 + col])
             }
             gridLayout.push(rowArr)
         }
         return gridLayout
-    }
+    };
+    
 
     return (
         <div id="landing">
-            {/* {console.log(tilesCon)} */}
+            {console.log("bruh: " +tiles)}
             <Navbar bg="light" variant="light">
                 <Navbar.Brand href="#home">Productive Ambience</Navbar.Brand>
                 <Nav className="mr-auto justify-content-end">
@@ -72,10 +81,10 @@ const Landing = (props) => {
             </Container>
             
             <Container id="soundTile-container" style={{width: "70%", textAlign: "center"}}>
-                {populateGrid(tiles).map((row) => (
-                    <Row className="soundTile-row">
-                        {row.map((col) => (
-                            <Col id={col.name} style={{margin: "30px"}}>
+                {populateGrid().map((row, rowIdx) => (
+                    <Row className="soundTile-row" key={rowIdx}>
+                        {row.map((col, colIdx) => (
+                            <Col id={col.name} style={{margin: "30px"}} key={colIdx}>
                                 <SoundTile
                                     name={col.name}
                                     icon={col.icon} 

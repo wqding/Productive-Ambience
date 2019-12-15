@@ -1,4 +1,4 @@
-const tilesConfig = [
+var tilesConfig = [
     {
         name: "fire",
         active: false,
@@ -22,4 +22,4 @@ const tilesConfig = [
     }
 ]
 
-export default tilesConfig  
+export default tilesConfig;
