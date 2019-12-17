@@ -5,33 +5,48 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import CustomizedSnackbars from 'LoginSnackbar';
+import LoginSnackbar from './LoginSnackbar.js';
+import axios from 'axios';
+import env from '../env.js'
 
 export default function Login(props) {
-    const [login, setLogin] = useState("");
+    // const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+    // const handleCloseSnackbar = (event, reason) => {
+    //     if (reason === 'clickaway') {
+    //         return;
+    //     }
+    //     setSnackbarOpen(false);
+    // };
+
+    const [username, setLogin] = useState("");
     const [password, setPassword] = useState("");
 
     const handleLoginClick = () => {
-        if(!login || !password){
-            return(
-                <div>
-                    <CustomizedSnackbars/>
-                    {/* <MySnackbarContentWrapper
-                        variant="warning"
-                        className={classes.margin}
-                        message="This is a warning message!"
-                    /> */}
-                </div>
-            )
+        if(!username || !password){
+            alert("please enter username/password");
+            // setSnackbarOpen(true);
+            // return(
+            //     <div>
+            //         <LoginSnackbar open={snackbarOpen} handleClose={handleCloseSnackbar}/>
+            //     </div>
+            // )
+            return
         }
-        //wrong pass
-        else if(true){
-            return(
-                <div>
-                   
-                </div>
-            )
-        }
+        axios.post((`${env.baseUrl}/login`), {
+            username: username,
+            password: password,
+        })
+        .then((res) => {
+            if(res.status === 200){
+                console.log('logged in!');
+                this.setState({
+                loggedIn: true,
+                currentUser: res.data.username
+                });
+                // console.log("currentUser: " + currentUser);
+            }
+        });
     };
 
 

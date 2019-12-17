@@ -80,7 +80,6 @@ const SoundTile = (props) => {
 
   const changeVolume = (event, newVolume) => {
     audio.volume = newVolume/100;
-    console.log(newVolume/100)
     setVolume(newVolume)
   };
 

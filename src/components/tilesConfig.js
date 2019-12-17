@@ -21,7 +21,7 @@ var tilesConfig = {
         name: "river",
         active: false,
         sound: river,
-        icon: "fas fa-water",
+        icon: "fas fa-tint",
         volume: 30
     },
     "train": {
@@ -52,6 +52,13 @@ var tilesConfig = {
         icon: "fas fa-bolt",
         volume: 30
     },
+    "birds": {
+        name: "birds",
+        active: false,
+        sound: birds,
+        icon: "fas fa-dove",
+        volume: 30
+    },
     "cafe": {
         name: "cafe",
         active: false,
@@ -75,5 +82,4 @@ var tilesConfig = {
     },
 }
 
-console.log(tilesConfig.fire.sound)
 export default tilesConfig;
