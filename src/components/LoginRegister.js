@@ -33,6 +33,7 @@ export default function Login(props) {
             // )
             return
         }
+        console.log(`${env.baseUrl}/login`)
         axios.post((`${env.baseUrl}/login`), {
             username: username,
             password: password,
@@ -40,10 +41,8 @@ export default function Login(props) {
         .then((res) => {
             if(res.status === 200){
                 console.log('logged in!');
-                this.setState({
-                loggedIn: true,
-                currentUser: res.data.username
-                });
+                //set current user state in parent state
+                
                 // console.log("currentUser: " + currentUser);
             }
         });
