@@ -9,7 +9,7 @@ import LoginSnackbar from './LoginSnackbar.js';
 import axios from 'axios';
 import env from '../env.js'
 
-export default function Login(props) {
+export default function Register(props) {
     // const [snackbarOpen, setSnackbarOpen] = useState(false);
 
     // const handleCloseSnackbar = (event, reason) => {
@@ -19,8 +19,9 @@ export default function Login(props) {
     //     setSnackbarOpen(false);
     // };
 
-    const [username, setLogin] = useState("");
-    const [password, setPassword] = useState("");
+    const [username, setLogin] = useState();
+    const [password, setPassword] = useState();
+    const [showRegister, setShowRegister] = useState(false);
 
     const handleLoginClick = () => {
         if(!username || !password){
@@ -33,8 +34,8 @@ export default function Login(props) {
             // )
             return
         }
-        console.log(`${env.baseUrl}/login`)
-        axios.post((`${env.baseUrl}/login`), {
+        //apparently needs to be hardcoded??
+        axios.post(`${env.baseUrl}/login`, {
             username: username,
             password: password,
         })
@@ -48,9 +49,19 @@ export default function Login(props) {
         });
     };
 
+    const handleRegisterClick = () => {
+        if(!showRegister){
+            setShowRegister(true);
+        }
+        else{
+            console.log()
+        }
+        
+    }
+
 
     return (
-        <Dialog open={props.open} onClose={props.handleClose} aria-labelledby="form-dialog-title">
+        <Dialog open={props.open} onClose={props.handleCloseLogin} aria-labelledby="form-dialog-title">
             <DialogContent>
                 <DialogContentText>
                     Login to save your favorite environments
@@ -78,12 +89,9 @@ export default function Login(props) {
                 />
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleLoginClick} color="primary">
-                    Login
-                </Button>
-                <Button onClick={props.handleClose} color="primary">
-                    Cancel
-                </Button>
+                <Button onClick={()=>{props.handleOpenRegister()}} color="primary" style={{marginRight:"auto"}}>Register</Button>
+                <Button onClick={handleLoginClick} color="primary">Login</Button>
+                <Button onClick={props.handleCloseLogin} color="primary">Cancel</Button>
             </DialogActions>
         </Dialog>
     );

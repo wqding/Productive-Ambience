@@ -3,19 +3,30 @@ import {Link} from 'react-router-dom';
 import {Container, Navbar, Nav, Col, Row} from 'react-bootstrap'
 import SoundTile from './SoundTile'
 import  tilesConfig from './tilesConfig.js'
-import Login from './LoginRegister.js'
+import Login from './Login.js'
+import Register from './Register.js'
+
 
 import '../styling/landing.css'
 
-const Landing = (props) => {
-    const [open, setOpen] = useState(false);
+const Landing = () => {
+    const [showLogin, setShowLogin] = useState(false);
+    const [showRegister, setShowRegister] = useState(false);
 
-    const handleOpen = () => {
-      setOpen(true);
+    const handleOpenLogin = () => {
+      setShowLogin(true);
     };
-  
-    const handleClose = () => {
-      setOpen(false);
+      
+    const handleCloseLogin = () => {
+        setShowLogin(false);
+    };
+
+    const handleOpenRegister = () => {
+        setShowRegister(true);
+    };
+
+    const handleCloseRegister = () => {
+        setShowRegister(false);
     };
     
     const populateGrid = () => {
@@ -41,8 +52,8 @@ const Landing = (props) => {
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="mr-auto"></Nav>
                     <Nav>
-                        <Nav.Link onClick={handleOpen}>Favorites</Nav.Link>
-                        <Nav.Link onClick={handleOpen}>Login</Nav.Link>
+                        <Nav.Link >Favorites</Nav.Link>
+                        <Nav.Link onClick={handleOpenLogin}>Login</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>
@@ -72,7 +83,8 @@ const Landing = (props) => {
                     </Row>
                 ))}
             </Container>
-            <Login open={open} handleClose={handleClose}></Login>
+            <Login open={showLogin} handleCloseLogin={handleCloseLogin} handleOpenRegister={handleOpenRegister}/>
+            <Register open={showRegister} handleCloseRegister={handleCloseRegister}/>
         </div>
     )
 }
