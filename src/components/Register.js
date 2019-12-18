@@ -34,13 +34,29 @@ export default function Login(props) {
             // )
             return
         }
-        alert('put register logic here')
+        if(password != confirmPW){
+            alert("passwords must match")
+            return
+        }
+
+        axios.post(`${env.baseUrl}/register`, {
+            username: username,
+            password: password,
+        })
+        .then((res) => {
+            if(res.status === 200){
+                console.log('registered!');
+
+                props.closeRegister()
+                //snack bar
+            }
+        });
         
     }
 
 
     return (
-        <Dialog open={props.open} onClose={props.handleCloseRegister} aria-labelledby="form-dialog-title">
+        <Dialog open={props.open} onClose={props.closeRegister} aria-labelledby="form-dialog-title">
             <DialogContent>
                 <DialogContentText>
                     Login to save your favorite environments
@@ -69,7 +85,7 @@ export default function Login(props) {
                 <TextField
                     className="outlined-textarea"
                     label="Confirm Password"
-                    type="Confirm Password"
+                    type="Password"
                     variant="outlined"
                     fullWidth
                     size="small"
@@ -79,7 +95,7 @@ export default function Login(props) {
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleRegisterClick} color="primary" style={{marginRight:"auto"}}>Register</Button>
-                <Button onClick={props.handleCloseRegister} color="primary">Cancel</Button>
+                <Button onClick={props.closeRegister} color="primary">Cancel</Button>
             </DialogActions>
         </Dialog>
     );

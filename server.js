@@ -42,26 +42,26 @@ app.post('/login', async (req, res) => {
   // VERY IMPORTANT: when i changed app.get to app.post for login(cause industry
   // standards apparently) the code broke and so I had to add await before
   // the result[0] to fix it.
-  // try {
-  //   if(await bcrypt.compare(req.body.password, await result[0].password)) {
-  //     console.log(result[0]);
-  //     // res.send({currentUser: result[0].username});
-  //     console.log("successful login");
+  try {
+    if(await bcrypt.compare(req.body.password, await result[0].password)) {
+      console.log(result[0]);
+      res.json({currentUser: result[0].username});
+      console.log("successful login");
 
-  //     // jwt.sign({user: req.body.username}, secretkey, (err, token) => {
-  //     //   res.json({
-  //     //     token
-  //     //   });
-  //     // });
+      // jwt.sign({user: req.body.username}, secretkey, (err, token) => {
+      //   res.json({
+      //     token
+      //   });
+      // });
 
-  //   } else {
-  //     console.log("failed login");
-  //     res.status(400).send('failed login');
-  //   }
-  // } catch {
-  //   res.status(500).send("some error");
-  //   console.log("some error");
-  // }
+    } else {
+      console.log("failed login");
+      res.status(400).send('failed login');
+    }
+  } catch {
+    console.log("some error");
+    res.status(500).send("some error");
+  }
 });
 
 app.post('/register', async (req, res) => {

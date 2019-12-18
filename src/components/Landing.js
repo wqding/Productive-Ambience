@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {Link} from 'react-router-dom';
-import {Container, Navbar, Nav, Col, Row} from 'react-bootstrap'
+import {Container, Navbar, Nav, Col, Row, NavDropdown} from 'react-bootstrap'
 import SoundTile from './SoundTile'
 import  tilesConfig from './tilesConfig.js'
 import Login from './Login.js'
@@ -12,22 +12,29 @@ import '../styling/landing.css'
 const Landing = () => {
     const [showLogin, setShowLogin] = useState(false);
     const [showRegister, setShowRegister] = useState(false);
+    const [currentUser, setCurrentUser] = useState(null);
 
-    const handleOpenLogin = () => {
+    const openLogin = () => {
       setShowLogin(true);
     };
       
-    const handleCloseLogin = () => {
+    const closeLogin = () => {
         setShowLogin(false);
     };
 
-    const handleOpenRegister = () => {
+    const openRegister = () => {
+        setShowLogin(false);
         setShowRegister(true);
     };
 
-    const handleCloseRegister = () => {
+    const closeRegister = () => {
+        setShowLogin(true);
         setShowRegister(false);
     };
+
+    const logout = () => {
+        setCurrentUser(null)
+    }
     
     const populateGrid = () => {
         let gridLayout = []
@@ -53,7 +60,14 @@ const Landing = () => {
                     <Nav className="mr-auto"></Nav>
                     <Nav>
                         <Nav.Link >Favorites</Nav.Link>
-                        <Nav.Link onClick={handleOpenLogin}>Login</Nav.Link>
+                        {currentUser == null?
+                            <Nav.Link onClick={openLogin}>Login</Nav.Link>
+                            :
+                            <NavDropdown title={currentUser} id="nav-dropdown">
+                                <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>
+                            </NavDropdown>
+                        }
+                        
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>
@@ -83,8 +97,13 @@ const Landing = () => {
                     </Row>
                 ))}
             </Container>
-            <Login open={showLogin} handleCloseLogin={handleCloseLogin} handleOpenRegister={handleOpenRegister}/>
-            <Register open={showRegister} handleCloseRegister={handleCloseRegister}/>
+            <Login 
+                open={showLogin} 
+                closeLogin={closeLogin} 
+                openRegister={openRegister} 
+                setCurrentUser={setCurrentUser}
+            />
+            <Register open={showRegister} closeRegister={closeRegister}/>
         </div>
     )
 }

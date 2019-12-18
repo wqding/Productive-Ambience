@@ -1,5 +1,5 @@
 const env = {
-   baseUrl: "https://localhost:5000"
+   baseUrl: "http://localhost:5000"
 }
 
 export default env;

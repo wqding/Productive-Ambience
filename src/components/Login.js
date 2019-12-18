@@ -21,7 +21,6 @@ export default function Register(props) {
 
     const [username, setLogin] = useState();
     const [password, setPassword] = useState();
-    const [showRegister, setShowRegister] = useState(false);
 
     const handleLoginClick = () => {
         if(!username || !password){
@@ -34,7 +33,6 @@ export default function Register(props) {
             // )
             return
         }
-        //apparently needs to be hardcoded??
         axios.post(`${env.baseUrl}/login`, {
             username: username,
             password: password,
@@ -42,26 +40,17 @@ export default function Register(props) {
         .then((res) => {
             if(res.status === 200){
                 console.log('logged in!');
-                //set current user state in parent state
-                
-                // console.log("currentUser: " + currentUser);
+                console.log(res.data.currentUser)
+                props.setCurrentUser(res.data.currentUser)
+                props.closeLogin()
+
+                //snackbar here
             }
         });
     };
 
-    const handleRegisterClick = () => {
-        if(!showRegister){
-            setShowRegister(true);
-        }
-        else{
-            console.log()
-        }
-        
-    }
-
-
     return (
-        <Dialog open={props.open} onClose={props.handleCloseLogin} aria-labelledby="form-dialog-title">
+        <Dialog open={props.open} onClose={props.closeLogin} aria-labelledby="form-dialog-title">
             <DialogContent>
                 <DialogContentText>
                     Login to save your favorite environments
@@ -89,9 +78,9 @@ export default function Register(props) {
                 />
             </DialogContent>
             <DialogActions>
-                <Button onClick={()=>{props.handleOpenRegister()}} color="primary" style={{marginRight:"auto"}}>Register</Button>
+                <Button onClick={props.openRegister} color="primary" style={{marginRight:"auto"}}>Register</Button>
                 <Button onClick={handleLoginClick} color="primary">Login</Button>
-                <Button onClick={props.handleCloseLogin} color="primary">Cancel</Button>
+                <Button onClick={props.closeLogin} color="primary">Cancel</Button>
             </DialogActions>
         </Dialog>
     );
