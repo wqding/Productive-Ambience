@@ -24,7 +24,7 @@ const Landing = (props) => {
         for(let row=0; row < temp.length/3; row++){
             let rowArr = []
             for(let col=0; col < 3; col++){
-                if(temp[row*3 + col] == undefined){
+                if(temp[row*3 + col] === undefined){
                     break;
                 }
                 rowArr.push(temp[row*3 + col])
