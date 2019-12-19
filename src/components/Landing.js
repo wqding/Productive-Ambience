@@ -8,6 +8,9 @@ import tilesConfig from './tilesConfig.js'
 import Login from './Login.js'
 import Register from './Register.js'
 
+// import axios from 'axios';
+import env from '../env.js'
+
 import '../styling/landing.css'
 
 const Landing = () => {
@@ -36,10 +39,47 @@ const Landing = () => {
 
     const logout = () => {
         setCurrentUser(null)
+        sessionStorage.removeItem('token')
     }
 
     const saveConfig = () => {
+        var data = {
+            name: "testName",
+            config: config
+        };
+        let token = sessionStorage.getItem('token');
+        console.log(token)
 
+        var xhr = new XMLHttpRequest();
+        //no credentials cause cors error otherwise
+        // xhr.withCredentials = true;
+
+        xhr.addEventListener("readystatechange", function () {
+            if (this.readyState === 4) {
+                console.log(this.responseText);
+            }
+        });
+
+        xhr.open("POST", `${env.baseUrl}/saveConfig`);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.setRequestHeader("Authorization", `Bearer ${token}`);
+
+        xhr.send(JSON.stringify(data));
+        // let token = sessionStorage.getItem('token');
+        // console.log(token)
+        // const header = {"Authorization": `Bearer ${token}`};
+
+        // axios.post(`${env.baseUrl}/saveConfig`, {
+        //     headers: header,
+        //     config: config
+        // })
+        // .then((res) => {
+        //     if(res.status === 200){
+        //         console.log("saved successfully")
+
+        //         //snackbar here
+        //     }
+        // });
     }
     
     const populateGrid = () => {

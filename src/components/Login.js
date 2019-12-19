@@ -39,9 +39,10 @@ export default function Register(props) {
         })
         .then((res) => {
             if(res.status === 200){
-                console.log('logged in!');
-                console.log(res.data.currentUser)
+                console.log("current user: " + res.data.currentUser)
                 props.setCurrentUser(res.data.currentUser)
+                sessionStorage.removeItem('token')
+                sessionStorage.setItem('token', res.data.token)
                 props.closeLogin()
 
                 //snackbar here

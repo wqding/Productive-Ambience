@@ -6,7 +6,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const logger = require('morgan')
 const bodyParser = require('body-parser')
-const User = require('./UserSchema.js');
+const Users = require('./UserSchema.js');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
@@ -33,7 +33,7 @@ db.on('error', console.error.bind(console, "MongoDB connection error: "));
 
 app.post('/login', async (req, res) => {
   console.log(req.body)
-  const result = await User.find({username: req.body.username});
+  const result = await Users.find({username: req.body.username});
 
   if(result[0] == undefined || result.length == 0){
     console.log("user does not exist");
@@ -46,14 +46,13 @@ app.post('/login', async (req, res) => {
   // the result[0] to fix it.
   try {
     if(await bcrypt.compare(req.body.password, await result[0].password)) {
-      // console.log(result[0]);
-      // res.json({currentUser: result[0].username});
-      // console.log("successful login");
+      const data ={currentUser: req.body.username}
 
-      jwt.sign({user: req.body.username}, secretkey, (err, token) => {
+      jwt.sign(data, secretkey, { expiresIn: '2h' }, (err, token) => {
         res.json({
           token: token,
-          currentUser: result[0].username
+          //TODO: the token already stores the currentUser so just get it from the token instead
+          currentUser: req.body.username
         });
       });
 
@@ -63,43 +62,54 @@ app.post('/login', async (req, res) => {
     }
   } catch (err){
     console.log(err);
-    res.status(500).send("some error");
+    res.status(500).send(err);
   }
 });
 
 app.post('/register', async (req, res) => {
-  const result = await User.find({username: req.body.username});
+  const result = await Users.find({username: req.body.username});
 
   if(result[0] != undefined){
-    console.log("username is taken");
-    res.status(401).send("username is taken");
+    console.log("Username is taken");
+    res.status(401).send("Username is taken");
     return;
   }
   
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10)
-    const user = new User({
+    const user = new Users({
       _id: new mongoose.Types.ObjectId(),
       username: req.body.username,
-      password: hashedPassword 
+      password: hashedPassword,
+      config: []
     });
 
     user.save();
     res.status(201).send("password bcrypted");
-  } catch {
-    res.status(500).send("some error: " + err);
+  } catch (err){
+    res.status(500).send(err);
   }
 });
 
-app.post("/saveConfig", verifyToken, (req, res) => {
+app.post("/saveConfig", verifyToken, async (req, res) => {
+  console.log(req.body);
   jwt.verify(req.token, secretkey, (err, authData) => {
     if(err) {
-      res.sendStatus(403);
+      res.status(403).send(err);
     } else {
-      res.json({
-        message: 'Authorized...',
-        authData
-      });
+
+      // //save to mongo db
+      // const result = await Users.find({username: req.body.username})
+      // if(result[0] == undefined || result.length == 0){
+      //   console.log("user does not exist");
+      //   res.status(401).send("user does not exist");
+      //   return;
+      // }
+
+
+      // Users.update({username: req.body.username}, {$push: { name:  }})
+
+      res.status(200).send("successfully saved config for: " + authData.currentUser);
     }
   });
 })
@@ -108,7 +118,6 @@ function verifyToken(req, res, next) {
   // Get auth header value
   const bearerHeader = req.headers['authorization'];
   if(typeof bearerHeader !== 'undefined') {
-    // Split at the space
     const bearer = bearerHeader.split(' ');
     // Get token from array
     const bearerToken = bearer[1];
