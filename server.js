@@ -10,10 +10,13 @@ const User = require('./UserSchema.js');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
-
 const app = express();
 
-app.use(cors())
+const secretkey = "secretkey"
+const dbRoute = "mongodb+srv://user:userPassword@cluster0-3xizq.mongodb.net/test?retryWrites=true&w=majority";
+
+
+app.use(cors());
 
 // Serve the static files from the React app
 app.use(express.static(path.join(__dirname, 'client/build')));
@@ -23,7 +26,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(logger('dev'));
 
-const dbRoute = "mongodb+srv://user:userPassword@cluster0-3xizq.mongodb.net/test?retryWrites=true&w=majority";
 mongoose.connect(dbRoute, { useUnifiedTopology: true, useNewUrlParser: true });
 let db = mongoose.connection;
 db.once('open', () => console.log('connected to db'));
@@ -44,22 +46,23 @@ app.post('/login', async (req, res) => {
   // the result[0] to fix it.
   try {
     if(await bcrypt.compare(req.body.password, await result[0].password)) {
-      console.log(result[0]);
-      res.json({currentUser: result[0].username});
-      console.log("successful login");
+      // console.log(result[0]);
+      // res.json({currentUser: result[0].username});
+      // console.log("successful login");
 
-      // jwt.sign({user: req.body.username}, secretkey, (err, token) => {
-      //   res.json({
-      //     token
-      //   });
-      // });
+      jwt.sign({user: req.body.username}, secretkey, (err, token) => {
+        res.json({
+          token: token,
+          currentUser: result[0].username
+        });
+      });
 
     } else {
       console.log("failed login");
       res.status(400).send('failed login');
     }
-  } catch {
-    console.log("some error");
+  } catch (err){
+    console.log(err);
     res.status(500).send("some error");
   }
 });
@@ -87,6 +90,36 @@ app.post('/register', async (req, res) => {
     res.status(500).send("some error: " + err);
   }
 });
+
+app.post("/saveConfig", verifyToken, (req, res) => {
+  jwt.verify(req.token, secretkey, (err, authData) => {
+    if(err) {
+      res.sendStatus(403);
+    } else {
+      res.json({
+        message: 'Authorized...',
+        authData
+      });
+    }
+  });
+})
+
+function verifyToken(req, res, next) {
+  // Get auth header value
+  const bearerHeader = req.headers['authorization'];
+  if(typeof bearerHeader !== 'undefined') {
+    // Split at the space
+    const bearer = bearerHeader.split(' ');
+    // Get token from array
+    const bearerToken = bearer[1];
+    // Set token
+    req.token = bearerToken;
+    // Next middleware
+    next();
+  } else {
+    res.sendStatus(403);
+  }
+}
 
 // Handles any requests that don't match the available
 app.get('*', (req,res) =>{

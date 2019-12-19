@@ -77,9 +77,14 @@ const SoundTile = (props) => {
     return audio
   })
 
-
   const changeVolume = (event, newVolume) => {
     audio.volume = newVolume/100;
+
+    let newConfig = props.config
+    newConfig[props.name].volume = newVolume;
+    console.log(newConfig[props.name].volume)
+    props.setConfig(newConfig)
+    
     setVolume(newVolume)
   };
 
@@ -90,6 +95,12 @@ const SoundTile = (props) => {
     else{
       audio.play();
     }
+
+    let newConfig = props.config
+    newConfig[props.name].active = !newConfig[props.name].active;
+    console.log(props.config[props.name].active)
+    props.setConfig(newConfig)
+
     setActive(!active);
   };
 
@@ -118,8 +129,7 @@ const SoundTile = (props) => {
         </Grid>
       </Grid>
     </div>
-        
-    )
+  )
 }
 
 export default SoundTile;
