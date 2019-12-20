@@ -44,7 +44,7 @@ export default function Login(props) {
             password: password,
         })
         .then((res) => {
-            if(res.status === 200){
+            if(res.status < 300){
                 console.log('registered!');
 
                 props.closeRegister()
@@ -56,7 +56,7 @@ export default function Login(props) {
 
 
     return (
-        <Dialog open={props.open} onClose={props.closeRegister} aria-labelledby="form-dialog-title">
+        <Dialog open={props.showRegister} onClose={props.closeRegister} aria-labelledby="form-dialog-title">
             <DialogContent>
                 <DialogContentText>
                     Login to save your favorite environments

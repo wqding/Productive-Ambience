@@ -26,7 +26,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(logger('dev'));
 
-mongoose.connect(dbRoute, { useUnifiedTopology: true, useNewUrlParser: true });
+mongoose.connect(dbRoute, { useUnifiedTopology: true, useNewUrlParser: true, useFindAndModify: false });
 let db = mongoose.connection;
 db.once('open', () => console.log('connected to db'));
 db.on('error', console.error.bind(console, "MongoDB connection error: "));
@@ -81,7 +81,7 @@ app.post('/register', async (req, res) => {
       _id: new mongoose.Types.ObjectId(),
       username: req.body.username,
       password: hashedPassword,
-      config: []
+      savedConfigs: []
     });
 
     user.save();
@@ -91,26 +91,34 @@ app.post('/register', async (req, res) => {
   }
 });
 
-app.post("/saveConfig", verifyToken, async (req, res) => {
+app.post("/saveConfig", verifyToken, (req, res) => {
   console.log(req.body);
-  jwt.verify(req.token, secretkey, (err, authData) => {
+  jwt.verify(req.token, secretkey, async (err, authData) => {
     if(err) {
       res.status(403).send(err);
     } else {
 
-      // //save to mongo db
-      // const result = await Users.find({username: req.body.username})
-      // if(result[0] == undefined || result.length == 0){
-      //   console.log("user does not exist");
-      //   res.status(401).send("user does not exist");
-      //   return;
-      // }
+      //save to mongo db
+      let userExists = await Users.exists({username: req.body.username});
+      if(!userExists){
+        console.log("user does not exist");
+        res.status(401).send("user does not exist");
+        return;
+      }
 
-
-      // Users.update({username: req.body.username}, {$push: { name:  }})
-
-      res.status(200).send("successfully saved config for: " + authData.currentUser);
-    }
+      Users.findOneAndUpdate(
+        {username: req.body.username}, 
+        {$push: {savedConfigs: req.body.name_and_config}},
+        function (err, data) {
+          if (err) {
+              return res.status(500).send(err);
+          }
+          if (!data) {
+              return res.status(404).end();
+          }
+          return res.status(200).send(data);
+      });
+     }
   });
 })
 

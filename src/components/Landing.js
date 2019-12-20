@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import {Link} from 'react-router-dom';
 import {Container, Navbar, Nav, Col, Row, NavDropdown} from 'react-bootstrap'
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
@@ -7,9 +6,11 @@ import SoundTile from './SoundTile'
 import tilesConfig from './tilesConfig.js'
 import Login from './Login.js'
 import Register from './Register.js'
+import Save from './Save.js'
 
+// import {Link} from 'react-router-dom';
 // import axios from 'axios';
-import env from '../env.js'
+// import env from '../env.js'
 
 import '../styling/landing.css'
 
@@ -18,6 +19,7 @@ const Landing = () => {
     const [showLogin, setShowLogin] = useState(false);
     const [showRegister, setShowRegister] = useState(false);
     const [currentUser, setCurrentUser] = useState(null);
+    const [showSave, setShowSave] = useState(false);
 
     const openLogin = () => {
       setShowLogin(true);
@@ -37,49 +39,23 @@ const Landing = () => {
         setShowRegister(false);
     };
 
-    const logout = () => {
-        setCurrentUser(null)
-        sessionStorage.removeItem('token')
+    const openSave = () => {
+        if(currentUser === null || sessionStorage.getItem('token') === null){
+            alert("not logged in! Add snack bar")
+            // Add snack bar
+            return;
+        }
+
+        setShowSave(true)
     }
 
-    const saveConfig = () => {
-        var data = {
-            name: "testName",
-            config: config
-        };
-        let token = sessionStorage.getItem('token');
-        console.log(token)
+    const closeSave = () => {
+        setShowSave(false)
+    }
 
-        var xhr = new XMLHttpRequest();
-        //no credentials cause cors error otherwise
-        // xhr.withCredentials = true;
-
-        xhr.addEventListener("readystatechange", function () {
-            if (this.readyState === 4) {
-                console.log(this.responseText);
-            }
-        });
-
-        xhr.open("POST", `${env.baseUrl}/saveConfig`);
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.setRequestHeader("Authorization", `Bearer ${token}`);
-
-        xhr.send(JSON.stringify(data));
-        // let token = sessionStorage.getItem('token');
-        // console.log(token)
-        // const header = {"Authorization": `Bearer ${token}`};
-
-        // axios.post(`${env.baseUrl}/saveConfig`, {
-        //     headers: header,
-        //     config: config
-        // })
-        // .then((res) => {
-        //     if(res.status === 200){
-        //         console.log("saved successfully")
-
-        //         //snackbar here
-        //     }
-        // });
+    const logout = () => {
+        setCurrentUser(null);
+        sessionStorage.clear();
     }
     
     const populateGrid = () => {
@@ -131,7 +107,7 @@ const Landing = () => {
                     <Col>
                         <ButtonGroup variant="text" color='primary' style={{textDecorationColor: 'white'}}>
                             <Button>Timer</Button>
-                            <Button onClick={saveConfig}>Save</Button>
+                            <Button onClick={openSave}>Save</Button>
                             <Button>Random</Button>
                         </ButtonGroup>
                     </Col>  
@@ -146,8 +122,10 @@ const Landing = () => {
                                     name={col.name}
                                     icon={col.icon}
                                     sound={col.sound}
-                                    active={config[col.name].active}
-                                    volume={config[col.name].volume}
+                                    // active={config[col.name].active}
+                                    // volume={config[col.name].volume}
+                                    active={col.active}
+                                    volume={col.volume}
                                 />
                             </Col>
                         ))}
@@ -155,12 +133,13 @@ const Landing = () => {
                 ))}
             </Container>
             <Login 
-                open={showLogin} 
+                showLogin={showLogin} 
                 closeLogin={closeLogin} 
                 openRegister={openRegister} 
                 setCurrentUser={setCurrentUser}
             />
-            <Register open={showRegister} closeRegister={closeRegister}/>
+            <Register showRegister={showRegister} closeRegister={closeRegister}/>
+            <Save showSave={showSave} closeSave={closeSave} config={config} currentUser={currentUser}/>
         </div>
     )
 }

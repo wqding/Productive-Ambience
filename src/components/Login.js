@@ -51,7 +51,7 @@ export default function Register(props) {
     };
 
     return (
-        <Dialog open={props.open} onClose={props.closeLogin} aria-labelledby="form-dialog-title">
+        <Dialog open={props.showLogin} onClose={props.closeLogin} aria-labelledby="form-dialog-title">
             <DialogContent>
                 <DialogContentText>
                     Login to save your favorite environments
