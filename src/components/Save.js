@@ -5,29 +5,20 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import LoginSnackbar from './LoginSnackbar.js';
-// import axios from 'axios';
 import env from '../env.js'
 
 export default function Save(props) {
-    // const [snackbarOpen, setSnackbarOpen] = useState(false);
-
-    // const handleCloseSnackbar = (event, reason) => {
-    //     if (reason === 'clickaway') {
-    //         return;
-    //     }
-    //     setSnackbarOpen(false);
-    // };
 
     const [configName, setConfigName] = useState();
 
     const saveConfig = () => {
+        var token = sessionStorage.getItem('token');
+        console.log(token)
+
         var name_and_config = {
             name: configName,
             config: props.config
         };
-        let token = sessionStorage.getItem('token');
-        console.log(token)
 
         var xhr = new XMLHttpRequest();
         //no credentials cause cors error otherwise
@@ -35,9 +26,8 @@ export default function Save(props) {
 
         xhr.addEventListener("readystatechange", function () {
             if (this.readyState === 4) {
-                console.log("successfully saved: " + configName);
+                props.openSnackbar('success', `Successfully saved ${configName}!`);
                 props.closeSave();
-                //snackbar here
             }
         });
 
@@ -47,7 +37,10 @@ export default function Save(props) {
 
         xhr.send(JSON.stringify({username: props.currentUser, name_and_config: name_and_config}));
 
-        // const header = {"Authorization": `Bearer ${token}`};
+        // const header = {
+        //     'Content-Type': 'application/json',
+        //     'Authorization': `Bearer ${token}`,
+        // };
 
         // axios.post(`${env.baseUrl}/saveConfig`, {
         //     headers: header,

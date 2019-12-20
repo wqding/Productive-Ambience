@@ -7,10 +7,9 @@ import tilesConfig from './tilesConfig.js'
 import Login from './Login.js'
 import Register from './Register.js'
 import Save from './Save.js'
+import CustomSnackbar from './CustomSnackbar.js';
 
 // import {Link} from 'react-router-dom';
-// import axios from 'axios';
-// import env from '../env.js'
 
 import '../styling/landing.css'
 
@@ -20,6 +19,8 @@ const Landing = () => {
     const [showRegister, setShowRegister] = useState(false);
     const [currentUser, setCurrentUser] = useState(null);
     const [showSave, setShowSave] = useState(false);
+    const [showSnackbar, setShowSnackbar] = useState(false);
+    const [snackbarType, setSnackbarType] = useState({variant: null, message: null})
 
     const openLogin = () => {
       setShowLogin(true);
@@ -41,17 +42,24 @@ const Landing = () => {
 
     const openSave = () => {
         if(currentUser === null || sessionStorage.getItem('token') === null){
-            alert("not logged in! Add snack bar")
-            // Add snack bar
+            openSnackbar('warning', 'You must log in to save an environment')
             return;
         }
-
         setShowSave(true)
     }
 
     const closeSave = () => {
         setShowSave(false)
     }
+
+    const openSnackbar = (variant, message) => {
+        setSnackbarType({variant: variant, message: message})
+        setShowSnackbar(true);
+    };
+  
+    const closeSnackbar = () => {
+      setShowSnackbar(false);
+    };
 
     const logout = () => {
         setCurrentUser(null);
@@ -132,14 +140,17 @@ const Landing = () => {
                     </Row>
                 ))}
             </Container>
+            
             <Login 
                 showLogin={showLogin} 
                 closeLogin={closeLogin} 
                 openRegister={openRegister} 
                 setCurrentUser={setCurrentUser}
+                openSnackbar={openSnackbar}
             />
-            <Register showRegister={showRegister} closeRegister={closeRegister}/>
-            <Save showSave={showSave} closeSave={closeSave} config={config} currentUser={currentUser}/>
+            <Register showRegister={showRegister} closeRegister={closeRegister} openSnackbar={openSnackbar}/>
+            <Save showSave={showSave} closeSave={closeSave} config={config} currentUser={currentUser} openSnackbar={openSnackbar}/>
+            <CustomSnackbar showSnackbar={showSnackbar} closeSnackbar={closeSnackbar} variant={snackbarType.variant} message={snackbarType.message}/>
         </div>
     )
 }

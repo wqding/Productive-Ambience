@@ -27,17 +27,16 @@ app.use(bodyParser.json());
 app.use(logger('dev'));
 
 mongoose.connect(dbRoute, { useUnifiedTopology: true, useNewUrlParser: true, useFindAndModify: false });
-let db = mongoose.connection;
+var db = mongoose.connection;
 db.once('open', () => console.log('connected to db'));
 db.on('error', console.error.bind(console, "MongoDB connection error: "));
 
 app.post('/login', async (req, res) => {
   console.log(req.body)
-  const result = await Users.find({username: req.body.username});
 
+  const result = await Users.find({username: req.body.username});
   if(result[0] == undefined || result.length == 0){
-    console.log("user does not exist");
-    res.status(401).send("user does not exist");
+    res.status(400).send("Invalid username/password");
     return;
   }
 
@@ -57,8 +56,7 @@ app.post('/login', async (req, res) => {
       });
 
     } else {
-      console.log("failed login");
-      res.status(400).send('failed login');
+      res.status(400).send("Invalid username/password");
     }
   } catch (err){
     console.log(err);
@@ -67,11 +65,10 @@ app.post('/login', async (req, res) => {
 });
 
 app.post('/register', async (req, res) => {
-  const result = await Users.find({username: req.body.username});
 
-  if(result[0] != undefined){
-    console.log("Username is taken");
-    res.status(401).send("Username is taken");
+  let userExists = await Users.exists({username: req.body.username});
+  if(!userExists){
+    res.status(403).send("Username is taken");
     return;
   }
   
@@ -85,7 +82,7 @@ app.post('/register', async (req, res) => {
     });
 
     user.save();
-    res.status(201).send("password bcrypted");
+    res.status(201).send("user created");
   } catch (err){
     res.status(500).send(err);
   }

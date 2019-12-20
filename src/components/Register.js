@@ -5,19 +5,11 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import LoginSnackbar from './LoginSnackbar.js';
+// import customSnackbar from './Snackbar.js';
 import axios from 'axios';
 import env from '../env.js'
 
 export default function Login(props) {
-    // const [snackbarOpen, setSnackbarOpen] = useState(false);
-
-    // const handleCloseSnackbar = (event, reason) => {
-    //     if (reason === 'clickaway') {
-    //         return;
-    //     }
-    //     setSnackbarOpen(false);
-    // };
 
     const [username, setLogin] = useState();
     const [password, setPassword] = useState();
@@ -25,17 +17,11 @@ export default function Login(props) {
 
     const handleRegisterClick = () => {
         if(!username || !password || !confirmPW){
-            alert("please enter username/password");
-            // setSnackbarOpen(true);
-            // return(
-            //     <div>
-            //         <LoginSnackbar open={snackbarOpen} handleClose={handleCloseSnackbar}/>
-            //     </div>
-            // )
+            props.openSnackbar('warning', 'Fields cannot be empty');
             return
         }
         if(password != confirmPW){
-            alert("passwords must match")
+            props.openSnackbar('error', 'Passwords do not match');
             return
         }
 
@@ -45,10 +31,9 @@ export default function Login(props) {
         })
         .then((res) => {
             if(res.status < 300){
-                console.log('registered!');
+                props.openSnackbar('success', `Welcome to the gang ${username}!`);
 
                 props.closeRegister()
-                //snack bar
             }
         });
         

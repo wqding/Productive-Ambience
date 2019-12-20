@@ -5,32 +5,16 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import LoginSnackbar from './LoginSnackbar.js';
 import axios from 'axios';
 import env from '../env.js'
 
 export default function Register(props) {
-    // const [snackbarOpen, setSnackbarOpen] = useState(false);
-
-    // const handleCloseSnackbar = (event, reason) => {
-    //     if (reason === 'clickaway') {
-    //         return;
-    //     }
-    //     setSnackbarOpen(false);
-    // };
-
     const [username, setLogin] = useState();
     const [password, setPassword] = useState();
 
     const handleLoginClick = () => {
         if(!username || !password){
-            alert("please enter username/password");
-            // setSnackbarOpen(true);
-            // return(
-            //     <div>
-            //         <LoginSnackbar open={snackbarOpen} handleClose={handleCloseSnackbar}/>
-            //     </div>
-            // )
+            props.openSnackbar('warning', 'Username or password cannot be empty');
             return
         }
         axios.post(`${env.baseUrl}/login`, {
@@ -39,15 +23,20 @@ export default function Register(props) {
         })
         .then((res) => {
             if(res.status === 200){
-                console.log("current user: " + res.data.currentUser)
-                props.setCurrentUser(res.data.currentUser)
-                sessionStorage.removeItem('token')
-                sessionStorage.setItem('token', res.data.token)
-                props.closeLogin()
-
-                //snackbar here
+                props.setCurrentUser(res.data.currentUser);
+                sessionStorage.clear();
+                sessionStorage.setItem('token', res.data.token);
+                
+                props.openSnackbar('success', `Welcome back ${res.data.currentUser}!`);
+                props.closeLogin();
             }
-        });
+        })
+        // .catch((res) => {
+        //     if(res.status >= 400){
+        //         console.log(res)
+        //         props.openSnackbar('error', res)
+        //     }
+        // });
     };
 
     return (
