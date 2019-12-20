@@ -8,6 +8,7 @@ import Login from './Login.js'
 import Register from './Register.js'
 import Save from './Save.js'
 import CustomSnackbar from './CustomSnackbar.js';
+import Favorites from './Favorites.js';
 
 // import {Link} from 'react-router-dom';
 
@@ -151,6 +152,7 @@ const Landing = () => {
             <Register showRegister={showRegister} closeRegister={closeRegister} openSnackbar={openSnackbar}/>
             <Save showSave={showSave} closeSave={closeSave} config={config} currentUser={currentUser} openSnackbar={openSnackbar}/>
             <CustomSnackbar showSnackbar={showSnackbar} closeSnackbar={closeSnackbar} variant={snackbarType.variant} message={snackbarType.message}/>
+            <Favorites/>
         </div>
     )
 }
