@@ -13,8 +13,7 @@ const cors = require('cors');
 const app = express();
 
 const secretkey = "secretkey"
-const dbRoute = "mongodb+srv://user:userPassword@cluster0-3xizq.mongodb.net/test?retryWrites=true&w=majority"
-// "mongodb+srv://user:userPassword@cluster0-3xizq.mongodb.net/test?retryWrites=true&w=majority";
+const dbRoute = "mongodb+srv://user:userPassword@cluster0-3xizq.mongodb.net/test?retryWrites=true&w=majority";
 
 
 app.use(cors());
@@ -89,7 +88,7 @@ app.post('/register', async (req, res) => {
   }
 });
 
-app.get("/savedFavorites", verifyToken, (req, res) => {
+app.post("/getSavedFavorites", verifyToken, (req, res) => {
   console.log(req.body);
   jwt.verify(req.token, secretkey, async (err, authData) => {
     if(err) {
@@ -97,13 +96,9 @@ app.get("/savedFavorites", verifyToken, (req, res) => {
     } else {
       const result = await Users.find({username: req.body.username});
       if(result[0] == undefined || result.length == 0){
-        res.status(400).send("User does not exist");
-        return;
+        return res.status(400).send("User does not exist");
       }
-
-      console.log(result[0].savedFavorites);
-      res.status(200).json(result[0].savedFavorites);
-      
+      return res.status(200).json(result[0].savedFavorites);
      }
   });
 })
@@ -118,8 +113,7 @@ app.post("/savedFavorites", verifyToken, (req, res) => {
       let userExists = await Users.exists({username: req.body.username});
       if(!userExists){
         console.log("User does not exist");
-        res.status(401).send("User does not exist");
-        return;
+        return res.status(401).send("User does not exist");
       }
 
       Users.findOneAndUpdate(

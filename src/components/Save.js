@@ -16,7 +16,7 @@ export default function Save(props) {
         console.log(token)
 
         var favorite = {
-            name: configName,
+            configName: configName,
             config: props.config
         };
 
@@ -36,23 +36,6 @@ export default function Save(props) {
         xhr.setRequestHeader("Authorization", `Bearer ${token}`);
 
         xhr.send(JSON.stringify({username: props.currentUser, favorite: favorite}));
-
-        // const header = {
-        //     'Content-Type': 'application/json',
-        //     'Authorization': `Bearer ${token}`,
-        // };
-
-        // axios.post(`${env.baseUrl}/saveConfig`, {
-        //     headers: header,
-        //     config: config
-        // })
-        // .then((res) => {
-        //     if(res.status === 200){
-        //         console.log("saved successfully")
-
-        //         //snackbar here
-        //     }
-        // });
     }
 
 

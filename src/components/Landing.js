@@ -9,6 +9,7 @@ import Register from './Register.js'
 import Save from './Save.js'
 import CustomSnackbar from './CustomSnackbar.js';
 import Favorites from './Favorites.js';
+import env from '../env.js'
 
 // import {Link} from 'react-router-dom';
 
@@ -22,6 +23,9 @@ const Landing = () => {
     const [showSave, setShowSave] = useState(false);
     const [showSnackbar, setShowSnackbar] = useState(false);
     const [snackbarType, setSnackbarType] = useState({variant: null, message: null})
+    const [showFavorites, setShowFavorites] = useState(false);
+    const [favorites, setFavorites] = useState();
+
 
     const openLogin = () => {
       setShowLogin(true);
@@ -62,9 +66,43 @@ const Landing = () => {
       setShowSnackbar(false);
     };
 
+    const openFavorites = () => {
+        if(currentUser === null || sessionStorage.getItem('token') === null){
+            openSnackbar('warning', 'You must log in to see your favorites')
+            return;
+        }
+        getFavorites();
+        setShowFavorites(true)
+    }
+
+    const closeFavorites = () => {
+        setShowFavorites(false)
+    }
+
     const logout = () => {
         setCurrentUser(null);
         sessionStorage.clear();
+    }
+
+    const getFavorites = () => {
+        var token = sessionStorage.getItem('token');
+        console.log(token)
+    
+        var xhr = new XMLHttpRequest();
+        //no credentials cause cors error otherwise
+        // xhr.withCredentials = true;
+
+        xhr.addEventListener("readystatechange", function () {
+            if (this.readyState === 4) {
+                setFavorites(JSON.parse(xhr.response))
+            }
+        });
+
+        xhr.open("POST", `${env.baseUrl}/getSavedFavorites`);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.setRequestHeader("Authorization", `Bearer ${token}`);
+
+        xhr.send(JSON.stringify({username: currentUser}));
     }
     
     const populateGrid = () => {
@@ -90,7 +128,7 @@ const Landing = () => {
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="mr-auto"></Nav>
                     <Nav>
-                        <Nav.Link >Favorites</Nav.Link>
+                        <Nav.Link onClick={openFavorites}>Favorites</Nav.Link>
                         {currentUser == null?
                             <Nav.Link onClick={openLogin}>Login</Nav.Link>
                             :
@@ -131,8 +169,6 @@ const Landing = () => {
                                     name={col.name}
                                     icon={col.icon}
                                     sound={col.sound}
-                                    // active={config[col.name].active}
-                                    // volume={config[col.name].volume}
                                     active={col.active}
                                     volume={col.volume}
                                 />
@@ -152,7 +188,7 @@ const Landing = () => {
             <Register showRegister={showRegister} closeRegister={closeRegister} openSnackbar={openSnackbar}/>
             <Save showSave={showSave} closeSave={closeSave} config={config} currentUser={currentUser} openSnackbar={openSnackbar}/>
             <CustomSnackbar showSnackbar={showSnackbar} closeSnackbar={closeSnackbar} variant={snackbarType.variant} message={snackbarType.message}/>
-            <Favorites username={currentUser} setConfig={setConfig}/>
+            <Favorites showFavorites={showFavorites} closeFavorites={closeFavorites} username={currentUser} setConfig={setConfig} favorites={favorites}/>
         </div>
     )
 }

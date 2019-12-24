@@ -1,94 +1,81 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import axios from 'axios';
+import Dialog from '@material-ui/core/Dialog';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import Slide from '@material-ui/core/Slide';
+import {Navbar, Nav, CardColumns, Card, ListGroup} from 'react-bootstrap'
 import env from '../env.js'
 
-const cardStyle = makeStyles({
-    card: {
-        minWidth: 275,
-    },
-    bullet: {
-        display: 'inline-block',
-        margin: '0 2px',
-        transform: 'scale(0.8)',
-    },
-    title: {
-        fontSize: 14,
-    },
-    pos: {
-        marginBottom: 12,
-    },
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export default function Favorites(props) {
-    const [favorites, setFavorites] = useState();
-
-    const getFavorites = () => {
-        var token = sessionStorage.getItem('token');
-        console.log(token)
     
-        axios.get(`${env.baseUrl}/savedFavorites`, {
-            token: token,
-            username: props.username,
-        })
-        .then(res => {
-            if(res.status === 200){
-                //get favs returned from server
-                console.log(res)
-                setFavorites(res.data.savedFavorites);
-
-                //render favs
-            }
-        })
-        .catch(err => {
-            console.log(err)
-            props.openSnackbar('error', err)
-        });
-    }
-    
-    const renderFavorites = (props) => {
-        const classes = cardStyle();
-        const bull = <span className={classes.bullet}>•</span>;
-
-        getFavorites();
-    
-        return (
-            <Card className={classes.card}>
-                <CardContent>
-                    <Typography className={classes.title} color="textSecondary" gutterBottom>
-                        Word of the Day
-                    </Typography>
-                    <Typography variant="h5" component="h2">
-                        be
-                        {bull}
-                        nev
-                        {bull}o{bull}
-                        lent
-                    </Typography>
-                    <Typography className={classes.pos} color="textSecondary">
-                        adjective
-                    </Typography>
-                    <Typography variant="body2" component="p">
-                        well meaning and kindly.
-                        <br />
-                        {'"a benevolent smile"'}
-                    </Typography>
-                </CardContent>
-                <CardActions>
-                    <Button size="small">Learn More</Button>
-                </CardActions>
-            </Card>
-        );
+    const renderFavorites = () => {
+        if(!props.favorites || props.favorites.length == 0){
+            return(
+                <Card style={{ width: '18rem' }}>
+                    <Card.Body style={{color: "black"}}>
+                        <Card.Title>No favorites</Card.Title>
+                    </Card.Body>
+                </Card>
+            )
+        }
+        
+        else{
+            return props.favorites.map(fav => {
+                return(
+                    <Card style={{ width: '18rem' }}>
+                        <Card.Body style={{color: "black"}}>
+                            <Card.Title>{fav.configName}</Card.Title>
+                        </Card.Body>
+                        {Object.values(fav.config).map(sound => {
+                            if(sound.active){
+                                return(
+                                    <ListGroup className="list-group-flush" style={{color: "black"}}>
+                                        {sound.name + ": " + sound.volume}
+                                    </ListGroup>
+                                )
+                            }
+                        })}
+                        
+                        <Card.Body>
+                            <Card.Link  href="#">Select</Card.Link>
+                        </Card.Body>
+                    </Card>
+                )
+            })
+        }
     }
 
-    return (
-       <div>
-           {renderFavorites}
-       </div>
+    return (        
+        <Dialog fullScreen open={props.showFavorites} onClose={props.closeFavorites} TransitionComponent={Transition}>
+            <Navbar bg="primary"  variant="dark">
+                <IconButton edge="start" style={{color:"white"}} onClick={props.closeFavorites} aria-label="close">
+                    <CloseIcon />
+                </IconButton>
+                <Navbar.Brand href="#home">Productive Ambience</Navbar.Brand>
+                <Navbar.Collapse id="responsive-navbar-nav">
+                    <Nav className="mr-auto"></Nav>
+                    <Nav>
+                        <Button style={{color:"white"}}>save</Button>                 
+                    </Nav>
+                </Navbar.Collapse>
+            </Navbar>
+            <CardColumns style={{
+                width: "100vw", 
+                height: "100%", 
+                backgroundColor: "#A9A8DC",
+                color: "white",
+                textAlign: "center",
+                paddingTop: "5%"
+            }}>
+                {renderFavorites()}
+            </CardColumns>
+      </Dialog>
+           
     );
 }

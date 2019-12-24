@@ -32,13 +32,12 @@ export default function Register(props) {
             }
         })
         .catch(err => {
-            console.log(err)
-            props.openSnackbar('error', err)
+            props.openSnackbar('error', "Login failed")
         });
     };
 
     return (
-        <Dialog open={props.showLogin} onClose={props.closeLogin} aria-labelledby="form-dialog-title">
+        <Dialog open={props.showLogin} aria-labelledby="form-dialog-title">
             <DialogContent>
                 <DialogContentText>
                     Login to save your favorite environments
