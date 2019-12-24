@@ -7,7 +7,7 @@ const UserSchema = new mongoose.Schema(
         username: String,
         password: String,
         //is it possible to have schema within a schema?
-        savedConfigs: []
+        savedFavorites: []
     },
     {timestamps: true}
 );

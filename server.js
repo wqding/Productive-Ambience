@@ -13,7 +13,8 @@ const cors = require('cors');
 const app = express();
 
 const secretkey = "secretkey"
-const dbRoute = "mongodb+srv://user:userPassword@cluster0-3xizq.mongodb.net/test?retryWrites=true&w=majority";
+const dbRoute = "mongodb+srv://user:userPassword@cluster0-3xizq.mongodb.net/test?retryWrites=true&w=majority"
+// "mongodb+srv://user:userPassword@cluster0-3xizq.mongodb.net/test?retryWrites=true&w=majority";
 
 
 app.use(cors());
@@ -67,7 +68,7 @@ app.post('/login', async (req, res) => {
 app.post('/register', async (req, res) => {
 
   let userExists = await Users.exists({username: req.body.username});
-  if(!userExists){
+  if(userExists){
     res.status(403).send("Username is taken");
     return;
   }
@@ -78,7 +79,7 @@ app.post('/register', async (req, res) => {
       _id: new mongoose.Types.ObjectId(),
       username: req.body.username,
       password: hashedPassword,
-      savedConfigs: []
+      savedFavorites: []
     });
 
     user.save();
@@ -88,24 +89,42 @@ app.post('/register', async (req, res) => {
   }
 });
 
-app.post("/saveConfig", verifyToken, (req, res) => {
+app.get("/savedFavorites", verifyToken, (req, res) => {
   console.log(req.body);
   jwt.verify(req.token, secretkey, async (err, authData) => {
     if(err) {
       res.status(403).send(err);
     } else {
+      const result = await Users.find({username: req.body.username});
+      if(result[0] == undefined || result.length == 0){
+        res.status(400).send("User does not exist");
+        return;
+      }
 
+      console.log(result[0].savedFavorites);
+      res.status(200).json(result[0].savedFavorites);
+      
+     }
+  });
+})
+
+app.post("/savedFavorites", verifyToken, (req, res) => {
+  console.log(req.body);
+  jwt.verify(req.token, secretkey, async (err, authData) => {
+    if(err) {
+      res.status(403).send(err);
+    } else {
       //save to mongo db
       let userExists = await Users.exists({username: req.body.username});
       if(!userExists){
-        console.log("user does not exist");
-        res.status(401).send("user does not exist");
+        console.log("User does not exist");
+        res.status(401).send("User does not exist");
         return;
       }
 
       Users.findOneAndUpdate(
         {username: req.body.username}, 
-        {$push: {savedConfigs: req.body.name_and_config}},
+        {$push: {savedFavorites: req.body.favorite}},
         function (err, data) {
           if (err) {
               return res.status(500).send(err);

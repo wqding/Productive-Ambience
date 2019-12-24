@@ -21,7 +21,7 @@ export default function Register(props) {
             username: username,
             password: password,
         })
-        .then((res) => {
+        .then(res => {
             if(res.status === 200){
                 props.setCurrentUser(res.data.currentUser);
                 sessionStorage.clear();
@@ -31,12 +31,10 @@ export default function Register(props) {
                 props.closeLogin();
             }
         })
-        // .catch((res) => {
-        //     if(res.status >= 400){
-        //         console.log(res)
-        //         props.openSnackbar('error', res)
-        //     }
-        // });
+        .catch(err => {
+            console.log(err)
+            props.openSnackbar('error', err)
+        });
     };
 
     return (

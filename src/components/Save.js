@@ -11,11 +11,11 @@ export default function Save(props) {
 
     const [configName, setConfigName] = useState();
 
-    const saveConfig = () => {
+    const saveFavorite = () => {
         var token = sessionStorage.getItem('token');
         console.log(token)
 
-        var name_and_config = {
+        var favorite = {
             name: configName,
             config: props.config
         };
@@ -31,11 +31,11 @@ export default function Save(props) {
             }
         });
 
-        xhr.open("POST", `${env.baseUrl}/saveConfig`);
+        xhr.open("POST", `${env.baseUrl}/savedFavorites`);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.setRequestHeader("Authorization", `Bearer ${token}`);
 
-        xhr.send(JSON.stringify({username: props.currentUser, name_and_config: name_and_config}));
+        xhr.send(JSON.stringify({username: props.currentUser, favorite: favorite}));
 
         // const header = {
         //     'Content-Type': 'application/json',
@@ -75,7 +75,7 @@ export default function Save(props) {
                 />
             </DialogContent>
             <DialogActions>
-                <Button onClick={saveConfig} color="primary" style={{marginRight:"auto"}}>Save</Button>
+                <Button onClick={saveFavorite} color="primary" style={{marginRight:"auto"}}>Save</Button>
                 <Button onClick={props.closeSave} color="primary">Cancel</Button>
             </DialogActions>
         </Dialog>

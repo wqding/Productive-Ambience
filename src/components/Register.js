@@ -20,7 +20,7 @@ export default function Login(props) {
             props.openSnackbar('warning', 'Fields cannot be empty');
             return
         }
-        if(password != confirmPW){
+        if(password !== confirmPW){
             props.openSnackbar('error', 'Passwords do not match');
             return
         }
