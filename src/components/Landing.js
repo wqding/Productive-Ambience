@@ -169,8 +169,8 @@ const Landing = () => {
                                     name={col.name}
                                     icon={col.icon}
                                     sound={col.sound}
-                                    active={col.active}
-                                    volume={col.volume}
+                                    active={config[col.name].active}
+                                    volume={config[col.name].volume}
                                 />
                             </Col>
                         ))}
