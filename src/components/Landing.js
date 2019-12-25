@@ -108,6 +108,7 @@ const Landing = () => {
     const populateGrid = () => {
         let gridLayout = []
         let temp = Object.values(config);
+        console.log(temp);
         for(let row=0; row < temp.length/3; row++){
             let rowArr = []
             for(let col=0; col < 3; col++){
@@ -169,8 +170,8 @@ const Landing = () => {
                                     name={col.name}
                                     icon={col.icon}
                                     sound={col.sound}
-                                    active={config[col.name].active}
-                                    volume={config[col.name].volume}
+                                    active={col.active}
+                                    volume={col.volume}
                                 />
                             </Col>
                         ))}

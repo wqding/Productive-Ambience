@@ -13,6 +13,12 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 export default function Favorites(props) {
+
+    const applyFavoriteEnv = (seletedFav) => {
+        console.log(seletedFav)
+        props.setConfig(seletedFav);
+        props.closeFavorites();
+    }
     
     const renderFavorites = () => {
         if(!props.favorites || props.favorites.length == 0){
@@ -26,24 +32,21 @@ export default function Favorites(props) {
         }
         
         else{
-            return props.favorites.map(fav => {
+            return props.favorites.map((fav, cardIdx) => {
                 return(
-                    <Card style={{ width: '18rem' }}>
+                    <Card style={{ width: '18rem' }} key={{cardIdx}}>
                         <Card.Body style={{color: "black"}}>
                             <Card.Title>{fav.configName}</Card.Title>
                         </Card.Body>
-                        {Object.values(fav.config).map(sound => {
-                            if(sound.active){
-                                return(
-                                    <ListGroup className="list-group-flush" style={{color: "black"}}>
-                                        {sound.name + ": " + sound.volume}
-                                    </ListGroup>
-                                )
-                            }
-                        })}
-                        
+                        <ListGroup className="list-group-flush" style={{color: "black"}}>
+                            {Object.values(fav.config).map((sound) => {
+                                if(sound.active){
+                                    return `${sound.name}: ${sound.volume}\r\n`
+                                }
+                            })}
+                        </ListGroup>
                         <Card.Body>
-                            <Card.Link  href="#">Select</Card.Link>
+                            <Card.Link onClick={() => {applyFavoriteEnv(fav.config)}} href="#">Select</Card.Link>
                         </Card.Body>
                     </Card>
                 )
