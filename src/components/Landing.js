@@ -150,13 +150,11 @@ const Landing = () => {
             
             <Container id="soundTile-container" style={{width: "60%", textAlign: "center"}}>
                 <Row>
-                    <Col>
-                        <ButtonGroup variant="text" color='primary' style={{textDecorationColor: 'white'}}>
-                            <Button>Timer</Button>
-                            <Button onClick={openSave}>Save</Button>
-                            <Button>Random</Button>
-                        </ButtonGroup>
-                    </Col>  
+                    <Col md={{span: 3}} style={{margin: "0px 30px"}}></Col>
+                    <Col md={{span: 3}} style={{margin: "0px 30px"}}>
+                        <Button onClick={openSave} style={{color:'white'}}>Save</Button>
+                    </Col>
+                    <Col md={{span: 3}} style={{margin: "0px 30px"}}></Col> 
                 </Row>
                 {populateGrid().map((row, rowIdx) => (
                     <Row className="soundTile-row" key={rowIdx}>
