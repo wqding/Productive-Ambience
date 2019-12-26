@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import { withStyles } from '@material-ui/core/styles';import Grid from '@material-ui/core/Grid';
 import Slider from '@material-ui/core/Slider';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -8,34 +8,34 @@ import { ConfigContext } from '../ConfigContext.js'
 
 
 function ValueLabelComponent(props) {
-    const { children, open, value } = props;
-  
-    const popperRef = React.useRef(null);
-    React.useEffect(() => {
-      if (popperRef.current) {
-        popperRef.current.update();
-      }
-    });
-  
-    return (
-      <Tooltip
-        PopperProps={{
-          popperRef,
-        }}
-        open={open}
-        enterTouchDelay={0}
-        placement="top"
-        title={value}
-      >
-        {children}
-      </Tooltip>
-    );
+  const { children, open, value } = props;
+
+  const popperRef = React.useRef(null);
+  React.useEffect(() => {
+    if (popperRef.current) {
+      popperRef.current.update();
+    }
+  });
+
+  return (
+    <Tooltip
+      PopperProps={{
+        popperRef,
+      }}
+      open={open}
+      enterTouchDelay={0}
+      placement="top"
+      title={value}
+    >
+      {children}
+    </Tooltip>
+  );
 }
 
 ValueLabelComponent.propTypes = {
-    children: PropTypes.element.isRequired,
-    open: PropTypes.bool.isRequired,
-    value: PropTypes.number.isRequired,
+  children: PropTypes.element.isRequired,
+  open: PropTypes.bool.isRequired,
+  value: PropTypes.number.isRequired,
 };
 
 
@@ -64,12 +64,13 @@ const VolumeSlider = withStyles({
 
 const SoundTile = (props) => {
   const [config, setConfig] = useContext(ConfigContext);
-  var volume = config[props.name].volume;
-  var active = config[props.name].active;
-  // const [volume, setVolume] = useState(volume)
-  // const [active, setActive] = useState(active)
-  const [audio] = useState(() => {
-    let audio = new Audio(props.sound)
+  var passedVolume = config[props.name].volume;
+  var passedActive = config[props.name].active;
+
+  const [volume, setVolume] = useState(passedVolume)
+  const [active, setActive] = useState(passedActive)
+  const [audio, setAudio] = useState(() => {
+    var audio = new Audio(props.sound)
 
     audio.addEventListener('ended', function () {
       this.currentTime = 0;
@@ -82,6 +83,21 @@ const SoundTile = (props) => {
     return audio
   })
 
+  useEffect(() => {
+    var newAudio = audio;
+    
+    if(passedVolume !== volume){
+      setVolume(passedVolume);
+      newAudio.volume = passedVolume/100;
+    }
+    if(passedActive !== active){
+      setActive(passedActive)
+      passedActive? newAudio.play(): newAudio.pause(); 
+    }
+
+    setAudio(newAudio)
+  })
+
   const changeVolume = (event, newVolume) => {
     audio.volume = newVolume/100;
 
@@ -90,7 +106,7 @@ const SoundTile = (props) => {
     setConfig(newConfig);
     console.log(config[props.name].volume);
 
-    // setVolume(newVolume)
+    setVolume(newVolume)
   };
 
   const toggleActive = (event) => {
@@ -106,7 +122,7 @@ const SoundTile = (props) => {
     setConfig(newConfig);
     console.log(config[props.name].active);
 
-    // setActive(!active);
+    setActive(!active);
   };
 
   return (
