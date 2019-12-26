@@ -1,5 +1,4 @@
 import React, {useContext} from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import IconButton from '@material-ui/core/IconButton';
@@ -17,7 +16,7 @@ export default function Favorites(props) {
 
 
     const applyFavoriteEnv = (seletedFav) => {
-        console.log(seletedFav)
+        // console.log(seletedFav)
         setConfig(seletedFav);
         props.closeFavorites();
     }
@@ -36,18 +35,19 @@ export default function Favorites(props) {
         else{
             return props.favorites.map((fav, cardIdx) => {
                 return(
-                    <Card style={{ width: '18rem' }} key={{cardIdx}}>
+                    <Card style={{ width: '18rem' }} key={cardIdx}>
                         <Card.Body style={{color: "black"}}>
                             <Card.Title>{fav.configName}</Card.Title>
-                        </Card.Body>
-                        <ListGroup className="list-group-flush" style={{color: "black"}}>
-                            {Object.values(fav.config).map((sound) => {
-                                if(sound.active){
-                                    return `${sound.name}: ${sound.volume}\r\n`
-                                }
-                            })}
-                        </ListGroup>
-                        <Card.Body>
+                            <ListGroup className="list-group-flush" style={{color: "black"}}>
+                                {Object.values(fav.config).map((sound) => {
+                                    if(sound.active){
+                                        return (
+                                            <>{`${sound.name}: ${sound.volume}`}<br/></>
+                                        );
+                                    }
+                                })}
+                            </ListGroup>
+                            <br/>
                             <Card.Link onClick={() => {applyFavoriteEnv(fav.config)}} href="#">Select</Card.Link>
                         </Card.Body>
                     </Card>
@@ -62,13 +62,8 @@ export default function Favorites(props) {
                 <IconButton edge="start" style={{color:"white"}} onClick={props.closeFavorites} aria-label="close">
                     <CloseIcon />
                 </IconButton>
-                <Navbar.Brand href="#home">Productive Ambience</Navbar.Brand>
-                <Navbar.Collapse id="responsive-navbar-nav">
-                    <Nav className="mr-auto"></Nav>
-                    <Nav>
-                        <Button style={{color:"white"}}>save</Button>                 
-                    </Nav>
-                </Navbar.Collapse>
+                <Navbar.Brand href="#home">Saved Environments</Navbar.Brand>
+
             </Navbar>
             <CardColumns style={{
                 width: "100vw", 

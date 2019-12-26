@@ -32,7 +32,7 @@ db.once('open', () => console.log('connected to db'));
 db.on('error', console.error.bind(console, "MongoDB connection error: "));
 
 app.post('/login', async (req, res) => {
-  console.log(req.body)
+  // console.log(req.body)
 
   const result = await Users.find({username: req.body.username});
   if(result[0] == undefined || result.length == 0){
@@ -89,7 +89,7 @@ app.post('/register', async (req, res) => {
 });
 
 app.post("/getSavedFavorites", verifyToken, (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   jwt.verify(req.token, secretkey, async (err, authData) => {
     if(err) {
       res.status(403).send(err);
@@ -104,7 +104,7 @@ app.post("/getSavedFavorites", verifyToken, (req, res) => {
 })
 
 app.post("/savedFavorites", verifyToken, (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   jwt.verify(req.token, secretkey, async (err, authData) => {
     if(err) {
       res.status(403).send(err);

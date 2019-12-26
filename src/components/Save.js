@@ -13,7 +13,6 @@ export default function Save(props) {
 
     const saveFavorite = () => {
         var token = sessionStorage.getItem('token');
-        console.log(token)
 
         var favorite = {
             configName: configName,

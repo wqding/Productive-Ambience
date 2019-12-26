@@ -104,7 +104,7 @@ const SoundTile = (props) => {
     var newConfig = config
     newConfig[props.name].volume = newVolume;
     setConfig(newConfig);
-    console.log(config[props.name].volume);
+    // console.log(config[props.name].volume);
 
     setVolume(newVolume)
   };
@@ -120,7 +120,7 @@ const SoundTile = (props) => {
     var newConfig = config
     newConfig[props.name].active = !newConfig[props.name].active;
     setConfig(newConfig);
-    console.log(config[props.name].active);
+    // console.log(config[props.name].active);
 
     setActive(!active);
   };

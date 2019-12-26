@@ -86,7 +86,6 @@ const Landing = () => {
 
     const getFavorites = () => {
         var token = sessionStorage.getItem('token');
-        console.log(token)
     
         var xhr = new XMLHttpRequest();
         //no credentials cause cors error otherwise
