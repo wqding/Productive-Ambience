@@ -1,8 +1,10 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import { withStyles } from '@material-ui/core/styles';import Grid from '@material-ui/core/Grid';
 import Slider from '@material-ui/core/Slider';
 import Tooltip from '@material-ui/core/Tooltip';
 import PropTypes from 'prop-types';
+import { ConfigContext } from '../ConfigContext.js'
+
 
 
 function ValueLabelComponent(props) {
@@ -61,8 +63,11 @@ const VolumeSlider = withStyles({
 })(Slider);
 
 const SoundTile = (props) => {
-  const [volume, setVolume] = useState(props.volume)
-  const [active, setActive] = useState(props.active)
+  const [config, setConfig] = useContext(ConfigContext);
+  var volume = config[props.name].volume;
+  var active = config[props.name].active;
+  // const [volume, setVolume] = useState(volume)
+  // const [active, setActive] = useState(active)
   const [audio] = useState(() => {
     let audio = new Audio(props.sound)
 
@@ -80,16 +85,12 @@ const SoundTile = (props) => {
   const changeVolume = (event, newVolume) => {
     audio.volume = newVolume/100;
 
-    props.config[props.name].volume = newVolume;
-    props.setConfig(props.config)
-    console.log(props.config[props.name].volume)
+    var newConfig = config
+    newConfig[props.name].volume = newVolume;
+    setConfig(newConfig);
+    console.log(config[props.name].volume);
 
-    // let newConfig = props.config.slice();
-    // newConfig[props.name].volume = newVolume;
-    // console.log(newConfig[props.name].volume)
-    // props.setConfig(newConfig)
-    
-    setVolume(newVolume)
+    // setVolume(newVolume)
   };
 
   const toggleActive = (event) => {
@@ -100,16 +101,12 @@ const SoundTile = (props) => {
       audio.play();
     }
 
-    // let newConfig = props.config
-    // newConfig[props.name].active = !newConfig[props.name].active;
-    // console.log(props.config[props.name].active)
-    // props.setConfig(newConfig)
+    var newConfig = config
+    newConfig[props.name].active = !newConfig[props.name].active;
+    setConfig(newConfig);
+    console.log(config[props.name].active);
 
-    props.config[props.name].active = !active;
-    props.setConfig(props.config)
-    console.log(props.config[props.name].active)
-
-    setActive(!active);
+    // setActive(!active);
   };
 
   return (
@@ -128,7 +125,7 @@ const SoundTile = (props) => {
           <VolumeSlider 
             value={volume} 
             ValueLabelComponent={ValueLabelComponent} 
-            onChange={changeVolume} 
+            onChange={changeVolume}
             aria-labelledby="VolumeSlider" 
           />
         </Grid>

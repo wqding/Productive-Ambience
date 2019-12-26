@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useContext} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -6,17 +6,19 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import {Navbar, Nav, CardColumns, Card, ListGroup} from 'react-bootstrap'
-import env from '../env.js'
+import { ConfigContext } from '../ConfigContext.js'
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export default function Favorites(props) {
+    const [config, setConfig] = useContext(ConfigContext);
+
 
     const applyFavoriteEnv = (seletedFav) => {
         console.log(seletedFav)
-        props.setConfig(seletedFav);
+        setConfig(seletedFav);
         props.closeFavorites();
     }
     

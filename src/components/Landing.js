@@ -1,22 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {Container, Navbar, Nav, Col, Row, NavDropdown} from 'react-bootstrap'
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import SoundTile from './SoundTile'
-import tilesConfig from './tilesConfig.js'
 import Login from './Login.js'
 import Register from './Register.js'
 import Save from './Save.js'
 import CustomSnackbar from './CustomSnackbar.js';
 import Favorites from './Favorites.js';
 import env from '../env.js'
+// import tilesConfig from './components/tilesConfig.js'
 
-// import {Link} from 'react-router-dom';
+import { ConfigContext } from '../ConfigContext.js'
 
 import '../styling/landing.css'
 
 const Landing = () => {
-    const [config, setConfig] = useState(tilesConfig)
+    const [config, setConfig] = useContext(ConfigContext);
     const [showLogin, setShowLogin] = useState(false);
     const [showRegister, setShowRegister] = useState(false);
     const [currentUser, setCurrentUser] = useState(null);
@@ -106,9 +106,8 @@ const Landing = () => {
     }
     
     const populateGrid = () => {
-        let gridLayout = []
+        let gridLayout = [];
         let temp = Object.values(config);
-        console.log(temp);
         for(let row=0; row < temp.length/3; row++){
             let rowArr = []
             for(let col=0; col < 3; col++){
@@ -165,13 +164,13 @@ const Landing = () => {
                         {row.map((col, colIdx) => (
                             <Col id={col.name} md={{span: 3}} style={{margin: "30px"}} key={colIdx}>
                                 <SoundTile
-                                    config={config}
-                                    setConfig={setConfig}
+                                    // config={config}
+                                    // setConfig={setConfig}
                                     name={col.name}
                                     icon={col.icon}
                                     sound={col.sound}
-                                    active={col.active}
-                                    volume={col.volume}
+                                    // active={col.active}
+                                    // volume={col.volume}
                                 />
                             </Col>
                         ))}
@@ -189,7 +188,7 @@ const Landing = () => {
             <Register showRegister={showRegister} closeRegister={closeRegister} openSnackbar={openSnackbar}/>
             <Save showSave={showSave} closeSave={closeSave} config={config} currentUser={currentUser} openSnackbar={openSnackbar}/>
             <CustomSnackbar showSnackbar={showSnackbar} closeSnackbar={closeSnackbar} variant={snackbarType.variant} message={snackbarType.message}/>
-            <Favorites showFavorites={showFavorites} closeFavorites={closeFavorites} username={currentUser} setConfig={setConfig} favorites={favorites}/>
+            <Favorites showFavorites={showFavorites} closeFavorites={closeFavorites} username={currentUser} favorites={favorites}/>
         </div>
     )
 }
