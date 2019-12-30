@@ -1,7 +1,6 @@
 import React, { useState, useContext } from 'react';
 import {Container, Navbar, Nav, Col, Row, NavDropdown} from 'react-bootstrap'
 import Button from '@material-ui/core/Button';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
 import SoundTile from './SoundTile'
 import Login from './Login.js'
 import Register from './Register.js'
