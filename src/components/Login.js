@@ -18,8 +18,8 @@ export default function Register(props) {
             return
         }
         
-        // axios.post(`${env.baseUrl}/login`, {
-        axios.post(`http://ec2-54-161-136-74.compute-1.amazonaws.com/login`, {
+        axios.post(`${env.baseUrl}/login`, {
+        // axios.post(`http://ec2-54-161-136-74.compute-1.amazonaws.com/login`, {
             username: username,
             password: password,
         })
