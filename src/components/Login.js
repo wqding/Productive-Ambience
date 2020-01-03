@@ -17,6 +17,7 @@ export default function Register(props) {
             props.openSnackbar('warning', 'Username or password cannot be empty');
             return
         }
+        
         axios.post(`${env.baseUrl}/login`, {
             username: username,
             password: password,
