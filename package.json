@@ -25,7 +25,8 @@
     "react-scripts": "3.3.0"
   },
   "scripts": {
-    "start": "NODE_ENV=production concurrently \"pm2 start server.js\" \"PORT=80 react-scripts start\"",
+    "deploy": "npm run build && NODE_ENV=production concurrently \"pm2 start server.js\" \"serve -s build -l 80\"",
+    "start": "concurrently \"nodemon server.js\" \"PORT=80 react-scripts start\"",
     "dev": "concurrently \"nodemon server.js\" \"react-scripts start\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
