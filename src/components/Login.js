@@ -57,7 +57,7 @@ export default function Register(props) {
                 <TextField
                     className="outlined-textarea"
                     label="Password"
-                    // type="password"
+                    type="password"
                     variant="outlined"
                     fullWidth
                     size="small"
