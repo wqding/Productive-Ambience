@@ -10,7 +10,11 @@ const App = () => {
   return (
     <ConfigContextProvider>
       <Router>
-        <Route exact path={"/"} component={Landing}/>
+        <Route path='/' component={() => { 
+          window.location.href = 'https://wqding.github.io'; 
+          return null;
+        }}/>
+        <Route exact path={"/services/prod-amb"} component={Landing}/>
       </Router>
     </ConfigContextProvider>
   );
