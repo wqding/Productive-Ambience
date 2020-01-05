@@ -28,7 +28,7 @@
     "deploy": "concurrently \"sudo pm2 start server.js\" \"sudo pm2 serve build 80\"",
     "start": "concurrently \"nodemon server.js\" \"PORT=80 react-scripts start\"",
     "dev": "concurrently \"nodemon server.js\" \"react-scripts start\"",
-    "build": "sudo react-scripts build",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
