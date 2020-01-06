@@ -1,4 +1,4 @@
-This project is available [here](https://adamding.me).
+This project is available [here](http://pa.adamding.me).
 
 ### What is the purpose of Productive Ambience?
 
