@@ -10,7 +10,7 @@ const App = () => {
   return (
     <ConfigContextProvider>
       <Router>
-        <Route path='/' component={Landing}/>
+        <Route exact path='/' component={Landing}/>
       </Router>
     </ConfigContextProvider>
   );
